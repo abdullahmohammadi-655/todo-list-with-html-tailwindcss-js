@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>counterproject</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  </head>
+  <body class="flex justify-center items-center h-screen" dir="rtl">
+      
+           <form class="w-[70%] shadow-sm shadow-red-700 p-5 rounded-lg flex flex-col items-center space-y-5 justify-center">
+              <h1 class="text-3xl font-bold"> مدیریت تسک ها</h1>
+            <div class="w-full flex justify-center space-x-2">
+              <input type="text" id="task" placeholder="تسک..." class="w-[80%] ring-[0.5px] rounded-lg px-3 py-2 outline-0 hover:outline-0">
+              <input type="submit" id="register" class="ring-[0.5px] px-3 py-2 rounded-lg font-bold hover:cursor-pointer hover:bg-gray-700 hover:text-white w-[10%]" value="ثبت تسک">
+            </div>
+            <div class="w-[90%] border " id="display">
+             
+      
+             
+            </div>
+           </form>
+
+
+           <div class="flex absolute inset-0 justify-center items-center h-screen">
+                     <div class="w-100 h-50 ring-1 rounded-lg flex flex-col backdrop-blur-2xl items-center justify-center">
+                           <p>حذف تسک </p>
+                           <i class="fa-solid fa-warning"></i>
+                           <h5>تسک به صورت دایمی حذف می شود </h5>
+
+                                  <div class="flex justify-evenly">
+                                     <button class="ring-[0.5px] rounded-lg px-3 py-2 font-bold">حذف شود</button>
+                                     <button class="ring-[0.5px] rounded-lg px-3 py-2 font-bold">حذف نشود</button>
+                                  </div>
+
+                     </div>
+           </div>
+
+             <script type="module" src="./todo.js"></script>
+  </body>
+</html>
