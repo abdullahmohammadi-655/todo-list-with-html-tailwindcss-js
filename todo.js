@@ -4,15 +4,9 @@
 const taskEl = document.getElementById('task');
 const registerBtn = document.getElementById('register');
 const displayEl = document.getElementById('display');
-
+const confirmEl = document.querySelector(".confirm");
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-if(tasks.length === 0){
-      const h1 = document.createElement('h1');
-      h1.innerHTML = "هنوز هیچ تسک ثبت نشده است."
-     displayEl.append(h1);
-      
-}
 
 
 registerBtn.addEventListener('click', (e) => {
@@ -21,8 +15,8 @@ registerBtn.addEventListener('click', (e) => {
       if (!taskValue) {
             return;
       }
-
-
+      
+      
       const task = { id: Date.now(), title: taskValue, completed: false };
       tasks.push(task);
       localStorage.setItem("tasks",JSON.stringify(tasks));
@@ -32,6 +26,13 @@ registerBtn.addEventListener('click', (e) => {
 
 function renderTasks() {
       displayEl.innerHTML = "";
+      if(tasks.length === 0){
+            const h1 = document.createElement('h1');
+            h1.classList.add("w-full","text-center","font-bold","text-red-700","text-xl")
+            h1.innerHTML = "هنوز هیچ تسک ثبت نشده است."
+           displayEl.append(h1);
+            
+      }
       tasks.forEach(task => {
             displayEl.innerHTML += `
                        <div>
@@ -75,15 +76,16 @@ displayEl.addEventListener('click', (e) => {
 
         // delete task section 
         if(e.target.classList.contains("delete")){
-            const id = Number(e.target.dataset.id);
+               confirmEl.classList.remove('hidden');
+            // const id = Number(e.target.dataset.id);
 
-            const task = tasks.findIndex((t) => t.id === id);
+            // const task = tasks.findIndex((t) => t.id === id);
 
-            if(task !== -1){
-                  tasks.splice(task,1);
-            }
+            // if(task !== -1){
+            //       tasks.splice(task,1);
+            // }
 
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+            // localStorage.setItem("tasks", JSON.stringify(tasks));
 
             renderTasks();
 
