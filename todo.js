@@ -1,18 +1,33 @@
 
 
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
+
 
 const taskEl = document.getElementById('task');
 const registerBtn = document.getElementById('register');
 const displayEl = document.getElementById('display');
 const confirmEl = document.querySelector(".confirm");
+const deleteBtnEl = document.querySelector(".deletebtn");
+const nodeleteBtnEl = document.querySelector(".nodeletebtn");
+
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 
-
+let selectedId;
 registerBtn.addEventListener('click', (e) => {
       e.preventDefault();
       const taskValue = taskEl.value;
       if (!taskValue) {
+            Toastify({
+                  text: "لطفا تسک را نوشته کنید",
+                  close: true,
+                  duration: 700,
+                  gravity: "top",
+                  style: {
+                        background: "red"
+                  }
+            }).showToast();
             return;
       }
       
@@ -77,16 +92,8 @@ displayEl.addEventListener('click', (e) => {
         // delete task section 
         if(e.target.classList.contains("delete")){
                confirmEl.classList.remove('hidden');
-            // const id = Number(e.target.dataset.id);
-
-            // const task = tasks.findIndex((t) => t.id === id);
-
-            // if(task !== -1){
-            //       tasks.splice(task,1);
-            // }
-
-            // localStorage.setItem("tasks", JSON.stringify(tasks));
-
+            const id = Number(e.target.dataset.id);
+            selectedId = id;
             renderTasks();
 
 
@@ -98,6 +105,32 @@ displayEl.addEventListener('click', (e) => {
 
         
 })
+
+
+nodeleteBtnEl.addEventListener('click', () => {
+        confirmEl.classList.add('hidden')
+})
+
+
+deleteBtnEl.addEventListener('click', () => {
+
+const task = tasks.findIndex((t) => t.id === selectedId);
+
+            if(task !== -1){
+                  tasks.splice(task,1);
+            }
+
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+             confirmEl.classList.add('hidden')
+            renderTasks();
+})
+
+
+// module 
+ // thirt party module
+ // toasitify-js
+
+
 
 
 
