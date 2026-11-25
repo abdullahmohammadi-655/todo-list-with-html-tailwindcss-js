@@ -10,6 +10,10 @@ const displayEl = document.getElementById('display');
 const confirmEl = document.querySelector(".confirm");
 const deleteBtnEl = document.querySelector(".deletebtn");
 const nodeleteBtnEl = document.querySelector(".nodeletebtn");
+const editEl = document.querySelector(".editEl");
+const editinputEl = document.querySelector('.editinput');
+const editbtnEl = document.querySelector(".editbtn");
+
 
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -22,7 +26,7 @@ registerBtn.addEventListener('click', (e) => {
             Toastify({
                   text: "لطفا تسک را نوشته کنید",
                   close: true,
-                  duration: 700,
+                  duration: 1000,
                   gravity: "top",
                   style: {
                         background: "red"
@@ -30,23 +34,33 @@ registerBtn.addEventListener('click', (e) => {
             }).showToast();
             return;
       }
-      
-      
+
+
       const task = { id: Date.now(), title: taskValue, completed: false };
       tasks.push(task);
-      localStorage.setItem("tasks",JSON.stringify(tasks));
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      Toastify({
+            text: "تسک شما ذخیره شد.",
+            gravity: "bottom",
+            stopOnFocus: true,
+            position: "center",
+            style: {
+                  background: "green",
+                  borderRadius: "10px"
+            }
+      }).showToast();
       renderTasks();
 })
 
 
 function renderTasks() {
       displayEl.innerHTML = "";
-      if(tasks.length === 0){
+      if (tasks.length === 0) {
             const h1 = document.createElement('h1');
-            h1.classList.add("w-full","text-center","font-bold","text-red-700","text-xl")
+            h1.classList.add("w-full", "text-center", "font-bold", "text-red-700", "text-xl")
             h1.innerHTML = "هنوز هیچ تسک ثبت نشده است."
-           displayEl.append(h1);
-            
+            displayEl.append(h1);
+
       }
       tasks.forEach(task => {
             displayEl.innerHTML += `
@@ -60,7 +74,7 @@ function renderTasks() {
 
                            <div class="flex w-1/4 space-x-4">
                               <i class="fa-solid fa-trash  hover:cursor-pointer text-red-700 delete" data-id="${task.id}"></i>
-                              <i class="fa-solid fa-edit hover:cursor-pointer text-orange-400"></i>
+                              <i class="fa-solid fa-edit hover:cursor-pointer text-orange-400 edit" data-item="${task.id}"></i>
                              <i class="fa-solid ${task.completed ? "fa-check" : "fa-hourglass-half"} text-indigo-700 toggle" data-id="${task.id}"></i>
                            </div>
                            </div>
@@ -79,58 +93,97 @@ renderTasks();
 displayEl.addEventListener('click', (e) => {
 
       //  change task status 
-        if(e.target.classList.contains('toggle')){
+      if (e.target.classList.contains('toggle')) {
             const id = Number(e.target.dataset.id);
             const task = tasks.find((t) => t.id === id);
             task.completed = !task.completed
 
             localStorage.setItem("tasks", JSON.stringify(tasks));
             renderTasks();
-        }
+      }
 
 
-        // delete task section 
-        if(e.target.classList.contains("delete")){
-               confirmEl.classList.remove('hidden');
+      // delete task section 
+      if (e.target.classList.contains("delete")) {
+            confirmEl.classList.remove('hidden');
             const id = Number(e.target.dataset.id);
             selectedId = id;
             renderTasks();
 
 
-        }
+      }
 
 
 
 
 
-        
+
+
+
+
 })
 
 
 nodeleteBtnEl.addEventListener('click', () => {
-        confirmEl.classList.add('hidden')
+      confirmEl.classList.add('hidden')
 })
 
 
 deleteBtnEl.addEventListener('click', () => {
+      const task = tasks.findIndex((t) => t.id === selectedId);
 
-const task = tasks.findIndex((t) => t.id === selectedId);
+      if (task !== -1) {
+            tasks.splice(task, 1);
+      }
 
-            if(task !== -1){
-                  tasks.splice(task,1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      confirmEl.classList.add('hidden')
+      Toastify({
+            text: "تسک شما به خوبی حذف شد.",
+            gravity: "bottom",
+            stopOnFocus: true,
+            position: "center",
+            style: {
+                  background: "green",
+                  borderRadius: "10px"
             }
-
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-             confirmEl.classList.add('hidden')
-            renderTasks();
+      }).showToast();
+      renderTasks();
 })
 
 
-// module 
- // thirt party module
- // toasitify-js
+// module
+// thirt party module
+// toasitify-js
 
 
+
+//  edit section 
+let selectedEditId;
+const editBtns = document.querySelectorAll(".edit");
+editBtns.forEach((btn) => {
+              btn.addEventListener("click", () => {
+                   const id = Number(btn.dataset.item);
+                   const task = tasks.find((t) => t.id === id);
+                   const title = task.title;
+                   editinputEl.value = title;
+                  selectedEditId = id;
+
+                   editEl.classList.remove("hidden");
+                   
+                   
+              })
+})
+
+
+editbtnEl.addEventListener('click', () => {
+        const task = tasks.find((t) => t.id === selectedEditId);
+        const newTitle = editinputEl.value;
+        task.title = newTitle;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        editEl.classList.add("hidden");
+       renderTasks();
+})
 
 
 
